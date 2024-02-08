@@ -4,20 +4,15 @@ const bcrypt = require('bcrypt');
 const { validateEmptyAndType, isEmailValid, isNameValid } = require('../util');
 
 const validateFields = (body) => {
-    console.log("here in validateFields");
 
     for (const field of Object.keys(body)) {
-        console.log("all keys", field);
         if (!validateEmptyAndType(body[field])) {
-            console.log("invalid from type");
             return false;
         }
         if (field === 'first_name' && !isNameValid(body[field])) {
-            console.log("invalid from first name");
             return false;
         }
         if (field === 'last_name' && !isNameValid(body[field])) {
-            console.log("invalid from lastname");
             return false;
         }
     }
@@ -35,7 +30,6 @@ const checkAllowedFields = (body, validFields) => {;
             validFields.delete(field);
         }
     }
-    console.log("validFields", validFields);
     
     if (validFields.size > 0) {
         return false;
@@ -50,16 +44,13 @@ const createUser = async (req, res) => {
         delete req.body.account_updated;
         
         if (!req.body.username) {
-            console.log("invalid from username email");
             return res.status(400).send();
         }   
         if (!isEmailValid(req.body.username)) {
-            console.log("invalid email address");
             return res.status(400).send();
         }
 
         if (!checkAllowedFields(req.body,new Set(['first_name', 'last_name', 'password','username'])) || !validateFields(req.body)) {
-            console.log("error thrown from checking allowed fields & validFields");
             return res.status(400).send();
         };
 
@@ -108,18 +99,15 @@ const getUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    console.log("reached here in upadte");
     try{
         delete req.body.account_created;
         delete req.body.account_updated;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            console.log("error thrown from checking allowed fields");
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            console.log("error thrown from validating types and null checks");
             return res.status(400).send();
         };
 
