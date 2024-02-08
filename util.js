@@ -13,7 +13,6 @@ const isEmailValid = (value) => {
 const alphabetRegex = /^[a-zA-Z ]+$/;
 const isNameValid = (value) => {
     if (!alphabetRegex.test(value)) {
-        console.log("it cam here in isname")
         return false;  
     }
     return true;
