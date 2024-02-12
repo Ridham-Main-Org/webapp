@@ -14,6 +14,7 @@ npm install
 
 # start server
 npm run dev
+test
 
 
 ## Deployment instructions
