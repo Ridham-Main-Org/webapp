@@ -1,6 +1,5 @@
 const User = require('./models/User');
 
-
   const verifyToken = async (req, res, next) => {
     try {
       const authHeader = req.headers.authorization || '';
@@ -15,7 +14,7 @@ const User = require('./models/User');
         const isPasswordCorrect = await userData.validPassword(enteredPassword, userData.dataValues.password);
         if (isPasswordCorrect) {
           req.user = userData;
-          next();
+          return next();
         }
       }
       return res.status(401).send();

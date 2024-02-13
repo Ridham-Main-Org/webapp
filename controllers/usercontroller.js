@@ -20,7 +20,6 @@ const validateFields = (body) => {
 }
 
 const checkAllowedFields = (body, validFields) => {;
-    console.log("here in checkAllowedFields");
     // const validFields = new Set(['first_name', 'last_name', 'password']);
 
     for (const field of Object.keys(body)) {
@@ -39,7 +38,6 @@ const checkAllowedFields = (body, validFields) => {;
 
 const createUser = async (req, res) => {
     try {
-        console.log(" request", Object.keys(req.body));
         delete req.body.account_created;
         delete req.body.account_updated;
         
@@ -75,7 +73,7 @@ const createUser = async (req, res) => {
             account_created: newUser.account_created,
             account_updated: newUser.account_updated,
         };
-        res.status(201).json(userWithoutPassword);
+        return res.status(201).json(userWithoutPassword);
 
     } catch (error) {
         res.status(500).send();
