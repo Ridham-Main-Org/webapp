@@ -16,6 +16,7 @@ jobs:
           POSTGRES_PASSWORD: Timepass@1934
           POSTGRES_HOST: "%"
           POSTGRES_PORT: 5432
+          POSTGRES_DB: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -26,12 +27,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 21
       - name: create and configure
         run: |
             touch .env
