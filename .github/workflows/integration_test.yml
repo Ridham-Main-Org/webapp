@@ -1,0 +1,47 @@
+name: Integration Test
+
+on:
+  pull_request:
+    branches: [main]
+
+
+jobs:
+  connect-remote:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: Timepass@1934
+          POSTGRES_PORT: 5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: create and configure
+        run: |
+            touch .env
+            echo DB_USER=postgres >> .env
+            echo DB_HOST=localhost >> .env
+            echo DB_NAME=postgres >> .env
+            echo DB_PASSWORD=Timepass@1934 >> .env
+            echo DB_PORT=5432 >> .env
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Run tests
+        run: npm test
