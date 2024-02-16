@@ -9,21 +9,21 @@ jobs:
   connect-remote:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: Timepass@1934
-          POSTGRES_USERNAME: postgres
-          POSTGRES_PORT: 5432
-          POSTGRES_DB: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    # services:
+    #   postgres:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_PASSWORD: Timepass@1934
+    #       POSTGRES_USERNAME: postgres
+    #       POSTGRES_PORT: 5432
+    #       POSTGRES_DB: postgres
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #     ports:
+    #       - 5432:5432
 
     steps:
       - name: Checkout code
@@ -33,13 +33,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 21
+
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+          
       - name: create and configure
         run: |
             touch .env
             echo DB_USER=postgres >> .env
-            echo DB_HOST=localhost >> .env
+            echo DB_HOST=127.0.0.1 >> .env
             echo DB_NAME=postgres >> .env
-            echo DB_PASSWORD=Timepass@1934 >> .env
+            echo DB_PASSWORD=postgres >> .env
             echo DB_PORT=5432 >> .env
 
       - name: Install dependencies
