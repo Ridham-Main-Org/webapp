@@ -5,6 +5,14 @@ const app = require('./server');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
+before(async() => {
+    const response = await chai.request(app)
+        .get('/healthz');
+    if (response.statusCode == 200) {
+        console.log("connection successful");
+    }    
+});
+
 describe('User API', () => {
     let createdUserId;
 
