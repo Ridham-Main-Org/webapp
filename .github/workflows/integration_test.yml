@@ -50,3 +50,56 @@ jobs:
           DB_HOST: "127.0.0.1"
           DB_NAME: "UserDB"
           DB_PORT: 5432
+
+# name: Integration Test
+
+# on:
+#   pull_request:
+#     branches: [main]
+
+
+# jobs:
+#   connect-remote:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 21
+    
+#       - name: Check if PostgreSQL is installed
+#         run: |
+#           if [ -x "$(command -v psql)" ]; then
+#             echo "PostgreSQL is installed."
+#           else
+#             echo "PostgreSQL is not installed."
+#           fi
+
+#       - name: Install PostgreSQL
+#         run: |
+#           sudo apt update
+#           sudo apt install postgresql -y
+#         timeout-minutes: 2
+
+#       - name: Start PostgreSQL
+#         run: |
+#           sudo service postgresql start
+#           pg_isready -U postgres -h localhost -p 5432
+
+
+#       - name: Install dependencies
+#         run: npm i
+
+#       - name: Run tests
+#         run: npm test
+#         env:
+#           DB_USER: "postgres"
+#           DB_PASSWORD: "postgres"
+#           DB_HOST: "127.0.0.1"
+#           DB_NAME: "UserDB"
+#           DB_PORT: 5432
+#           PGPASSWORD: "postgres"
+
