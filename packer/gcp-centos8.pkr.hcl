@@ -1,7 +1,11 @@
 #variables here
 // variable "app_code" {}
-variable "project_id" {}
-variable "zone" {}
+variable "project_id" {
+  default = "celestial-gecko-414117"
+}
+variable "zone" {
+  default = "us-west1-a"
+}
 
 packer {
   required_plugins {
