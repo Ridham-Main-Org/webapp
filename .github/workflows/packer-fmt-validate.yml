@@ -22,7 +22,7 @@ jobs:
         run: |
           zip -r my-webapp-copy.zip .
       
-      - name: Setup `packer` and install plugins
+      - name: Setup `packer`
         run: packer init ./packer/gcp-centos8.pkr.hcl
 
       - name: Packer format
@@ -30,6 +30,6 @@ jobs:
       
       - name: Packer validate
         run: |
-          packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl
+          packer validate ./packer/gcp-centos8.pkr.hcl
  
         
