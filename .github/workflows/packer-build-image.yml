@@ -77,4 +77,4 @@ jobs:
 
       - name: Packer Build
         run: |
-          packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' -var 'app_code=my-webapp-copy.zip' ./packer/gcp-centos8.pkr.hcl
+          packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl

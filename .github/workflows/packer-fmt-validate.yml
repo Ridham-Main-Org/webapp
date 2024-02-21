@@ -17,11 +17,21 @@ jobs:
         id: setup
         with:
           version: "1.10.1"
+      
+      - name: Build Application Artifact
+        run: |
+          zip -r my-webapp-copy.zip .
+      
+      - name: Setup `packer` and install plugins
+        run: |
+          packer init ./packer/gcp-centos8.pkr.hcl
+          packer init -upgrade
 
       - name: Packer format
-        run: packer fmt -check packer/gcp-centos8.pkr.hcl
+        run: packer fmt -check ./packer/gcp-centos8.pkr.hcl
       
       - name: Packer validate
-        run: packer validate packer/gcp-centos8.pkr.hcl
+        run: |
+          packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl
  
         
