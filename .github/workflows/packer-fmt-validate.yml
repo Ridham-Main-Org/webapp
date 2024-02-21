@@ -23,9 +23,7 @@ jobs:
           zip -r my-webapp-copy.zip .
       
       - name: Setup `packer` and install plugins
-        run: |
-          packer init ./packer/gcp-centos8.pkr.hcl
-          packer init -upgrade
+        run: packer init ./packer/gcp-centos8.pkr.hcl
 
       - name: Packer format
         run: packer fmt -check ./packer/gcp-centos8.pkr.hcl
