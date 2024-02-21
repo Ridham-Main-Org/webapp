@@ -19,9 +19,9 @@ jobs:
           version: "1.10.1"
 
       - name: Packer format
-        run: packer fmt -check .
+        run: packer fmt -check packer/gcp-centos8.pkr.hcl
       
       - name: Packer validate
-        run: packer validate .
+        run: packer validate packer/gcp-centos8.pkr.hcl
  
         
