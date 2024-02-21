@@ -2,7 +2,7 @@ name: Packer build
 
 on:
   push:
-    branches: [main]
+    branches: [test-packer-actions]
 
 jobs:
   integration-test-job:
