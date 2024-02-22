@@ -1,14 +1,12 @@
 #!/bin/bash
 
 # Navigate to the directory where your Node.js application is located
-
 cd /opt
 yes | sudo dnf install unzip
 yes | sudo unzip -o my-webapp-copy.zip
 
 echo "Contents of /opt after unzipping:"
 ls -l /opt
-# cd my-webapp-copy
 
 # Create the .env file with the specified contents
 sudo tee .env > /dev/null <<EOF
