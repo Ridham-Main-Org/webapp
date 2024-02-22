@@ -2,21 +2,21 @@
 
 
 # Define the service file path
-service_file="/opt/my-webapp-copy/gcp-centos8.service"
+service_file="/opt/gcp-centos8.service"
 
 # Create the service file using a here document
 sudo tee "$service_file" > /dev/null <<-EOF
 [Unit]
 Description=CSYE 6225 App
-ConditionPathExists=/opt/my-webapp-copy/server.js
+ConditionPathExists=/opt/server.js
 After=network.target
 
 [Service]
 Type=simple
 User=csye6225
 Group=csye6225
-WorkingDirectory=/opt/my-webapp-copy
-ExecStart=/usr/bin/node /opt/my-webapp-copy/server.js
+WorkingDirectory=/opt
+ExecStart=/usr/bin/node /opt/server.js
 Restart=always
 RestartSec=3
 StandardOutput=syslog

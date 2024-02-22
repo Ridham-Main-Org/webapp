@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo chown -R csye6225:csye6225 /opt/my-webapp-copy
+sudo chown -R csye6225:csye6225 /opt
