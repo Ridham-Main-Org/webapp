@@ -33,7 +33,7 @@ describe('User API', () => {
                 .get(`/v1/user/self`)
                 .auth(userData.username, userData.password); // Basic authentication
 
-            expect(res1).to.have.status(400);
+            expect(res1).to.have.status(200);
             expect(res1.body.username).to.equal(userData.username);
 
             createdUserId = res1.body.id; // Store the created user's ID for later use
