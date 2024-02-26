@@ -31,6 +31,5 @@ jobs:
       - name: Packer validate
         run: |
           packer validate ./packer/gcp-centos8.pkr.hcl
-          demo
  
         
