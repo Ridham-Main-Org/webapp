@@ -44,13 +44,13 @@ build {
     script = "./packer/scripts/move_file.sh"
   }
 
-  provisioner "shell" {
-    script = "./packer/scripts/install_postgres.sh"
-  }
-
   // provisioner "shell" {
-  //   script = "./packer/scripts/install_dependencies.sh"
+  //   script = "./packer/scripts/install_postgres.sh"
   // }
+
+  provisioner "shell" {
+    script = "./packer/scripts/install_dependencies.sh"
+  }
 
   provisioner "shell" {
     script = "./packer/scripts/update_ownership.sh"
