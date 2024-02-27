@@ -48,9 +48,9 @@ build {
     script = "./packer/scripts/install_postgres.sh"
   }
 
-  provisioner "shell" {
-    script = "./packer/scripts/install_dependencies.sh"
-  }
+  // provisioner "shell" {
+  //   script = "./packer/scripts/install_dependencies.sh"
+  // }
 
   provisioner "shell" {
     script = "./packer/scripts/update_ownership.sh"

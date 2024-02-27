@@ -8,7 +8,7 @@ service_file="/opt/gcp-centos8.service"
 sudo tee "$service_file" > /dev/null <<-EOF
 [Unit]
 Description=CSYE 6225 App
-ConditionPathExists=/opt/server.js
+ConditionPathExists=/opt/.env
 After=network.target
 
 [Service]
@@ -38,5 +38,5 @@ ls -l /etc/systemd/system/
 sudo systemctl daemon-reload
 
 # Start and enable the service
-sudo systemctl start gcp-centos8.service
-sudo systemctl enable gcp-centos8.service
+# sudo systemctl start gcp-centos8.service
+# sudo systemctl enable gcp-centos8.service
