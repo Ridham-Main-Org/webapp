@@ -70,5 +70,5 @@ jobs:
           DB_USER: ridham
           DB_PASSWORD: postgres
           DB_HOST: 127.0.0.1
-          DB_NAME: UserDB
+          DB_NAME: userdb
           DB_PORT: 5432
