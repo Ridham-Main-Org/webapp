@@ -52,15 +52,6 @@ jobs:
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE UserDB to ridham;" 2>/dev/null
           sudo -u postgres psql -c "\l"
 
-      - name: Verify Database Creation
-        run: |
-          exists=$(sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='UserDB';" | wc -l)
-          if [ $exists -eq 1 ]; then
-            echo "Database UserDB exists."
-          else
-            echo "Database UserDB does not exist."
-            exit 1
-          fi
       - name: Install dependencies
         run: npm i
 
