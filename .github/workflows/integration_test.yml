@@ -9,8 +9,8 @@ jobs:
   connect-remote:
     runs-on: ubuntu-latest
     env:
-      POSTGRES_PASSWORD: ${{ secrets.DB_USERNAME}}
-      POSTGRES_USERNAME: ${{ secrets.DB_PASSWORD}}
+      POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD}}
+      POSTGRES_USERNAME: ${{ secrets.DB_USERNAME}}
       POSTGRES_DB: ${{ secrets.DB_NAME}}
 
     steps:
