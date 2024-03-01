@@ -47,9 +47,9 @@ jobs:
 
       - name: Create Postgres Database and User 
         run: |
-          sudo -u postgres psql -c "CREATE USER $POSTGRES_USERNAME WITH PASSWORD '$POSTGRES_PASSWORD';" 2>/dev/null
-          sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;" 2>/dev/null
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to $POSTGRES_USERNAME;" 2>/dev/null
+          sudo -u postgres psql -c "CREATE USER ridham WITH PASSWORD 'postgres';" 2>/dev/null
+          sudo -u postgres psql -c "CREATE DATABASE UserDB;" 2>/dev/null
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE UserDB to ridham;" 2>/dev/null
 
       - name: Install dependencies
         run: npm i
@@ -57,7 +57,7 @@ jobs:
       - name: Run tests
         run: npm test
         env:
-          DB_USER: "postgres"
+          DB_USER: "ridham"
           DB_PASSWORD: "postgres"
           DB_HOST: "127.0.0.1"
           DB_NAME: "UserDB"
