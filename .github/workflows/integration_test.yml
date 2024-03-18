@@ -36,17 +36,23 @@ jobs:
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to $POSTGRES_USERNAME;" 2>/dev/null
           sudo -u postgres psql -c "\l" 2>/dev/null
 
-      - name: create env and configure
+      - name: create and configure
         run: |
-            sudo touch .env
-            sudo echo DB_PORT=5432 >> .env
-            sudo echo DB_HOST=127.0.0.1 >> .env
-            sudo echo DB_USER=${{ secrets.DB_USERNAME }} >> .env
-            sudo echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-            sudo echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            touch .env
+            echo DB_PORT=5432 >> .env
+            echo DB_HOST=127.0.0.1 >> .env
+            echo DB_USER=${{ secrets.DB_USERNAME }} >> .env
+            echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
 
       - name: Install dependencies
         run: npm i
 
       - name: Run tests
         run: npm test
+        env:
+          DB_USER: $POSTGRES_USERNAME
+          DB_PASSWORD: $POSTGRES_PASSWORD
+          DB_HOST: 127.0.0.1
+          DB_NAME: $POSTGRES_DB
+          DB_PORT: 5432
