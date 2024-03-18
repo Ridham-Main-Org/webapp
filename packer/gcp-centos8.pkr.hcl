@@ -53,10 +53,15 @@ build {
   }
 
   provisioner "shell" {
+    script = "./packer/scripts/install_configure_ops_agent.sh"
+  }
+
+  provisioner "shell" {
     script = "./packer/scripts/update_ownership.sh"
   }
 
   provisioner "shell" {
     script = "./packer/scripts/cp_configure_service_file_systemd.sh"
   }
+
 }
