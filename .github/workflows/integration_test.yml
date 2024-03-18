@@ -26,7 +26,7 @@ jobs:
 
       - name: Postgres Database and User creation 
         run: |
-          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH PASSWORD '${{ secrets.DB_PASSWORD }}';" 2>/dev/null
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH PASSWORD ${{ secrets.DB_PASSWORD }};" 2>/dev/null
           sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DB_NAME }};" 2>/dev/null
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to ${{ secrets.DB_USERNAME }};" 2>/dev/null
           sudo -u postgres psql -c "\l"
