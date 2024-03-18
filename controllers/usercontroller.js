@@ -62,7 +62,7 @@ const createUser = async (req, res) => {
         const { username, password, first_name, last_name } = req.body;
         const exisitingUser = await User.findOne({ where: { username } });
         if (exisitingUser) {
-            logger.error("User with this email already exists");
+            logger.info("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
         
@@ -85,7 +85,7 @@ const createUser = async (req, res) => {
         return res.status(201).json(userWithoutPassword);
 
     } catch (error) {
-        logger.error("Bad request while creating user",{error});
+        logger.warn("Bad request while creating user",{error});
         res.status(400).send();
     }
 }
@@ -120,12 +120,12 @@ const updateUser = async (req, res) => {
         const reqBody = req.body;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            logger.error("Allowed fields not specified",{reqBody});
+            logger.info("Allowed fields not specified",{reqBody});
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            logger.error("Invalid values in the request body",{reqBody});
+            logger.info("Invalid values in the request body",{reqBody});
             return res.status(400).send();
         };
 
@@ -140,7 +140,7 @@ const updateUser = async (req, res) => {
         res.status(204).send();
 
     } catch (error) {
-        logger.error("Bad request while updating user",{error});
+        logger.warn("Bad request while updating user",{error});
         res.status(400).send();
     }
 }
