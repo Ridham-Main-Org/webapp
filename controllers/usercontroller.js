@@ -46,23 +46,23 @@ const createUser = async (req, res) => {
         delete req.body.account_updated;
         
         if (!req.body.username) {
-            logger.error("Username not provided!");
+            // logger.error("Username not provided!");
             return res.status(400).send();
         }   
         if (!isEmailValid(req.body.username)) {
-            logger.error("Invalid email!");
+            // logger.error("Invalid email!");
             return res.status(400).send();
         }
 
         if (!checkAllowedFields(req.body,new Set(['first_name', 'last_name', 'password','username'])) || !validateFields(req.body)) {
-            logger.error("Allowed fields not specified");
+            // logger.error("Allowed fields not specified");
             return res.status(400).send();
         };
 
         const { username, password, first_name, last_name } = req.body;
         const exisitingUser = await User.findOne({ where: { username } });
         if (exisitingUser) {
-            logger.error("User with this email already exists");
+            // logger.error("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
         
@@ -85,7 +85,7 @@ const createUser = async (req, res) => {
         return res.status(201).json(userWithoutPassword);
 
     } catch (error) {
-        logger.error("Bad request while creating user",{error});
+        // logger.error("Bad request while creating user",{error});
         res.status(400).send();
     }
 }
@@ -120,12 +120,12 @@ const updateUser = async (req, res) => {
         const reqBody = req.body;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            logger.error("Allowed fields not specified",{reqBody});
+            // logger.error("Allowed fields not specified",{reqBody});
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            logger.error("Invalid values in the request body",{reqBody});
+            // logger.error("Invalid values in the request body",{reqBody});
             return res.status(400).send();
         };
 
@@ -140,7 +140,7 @@ const updateUser = async (req, res) => {
         res.status(204).send();
 
     } catch (error) {
-        logger.error("Bad request while updating user",{error});
+        // logger.error("Bad request while updating user",{error});
         res.status(400).send();
     }
 }
