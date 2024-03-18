@@ -28,14 +28,12 @@ jobs:
           sudo apt-get install -y postgresql postgresql-contrib
           sudo systemctl start postgresql
           sudo systemctl enable postgresql
-
       - name: Postgres Database and User creation 
         run: |
           sudo -u postgres psql -c "CREATE USER $POSTGRES_USERNAME WITH PASSWORD '$POSTGRES_PASSWORD';" 2>/dev/null
           sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;" 2>/dev/null
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to $POSTGRES_USERNAME;" 2>/dev/null
-          sudo -u postgres psql -c "\l" 2>/dev/null
-
+          sudo -u postgres psql -c "\l"
       - name: Install dependencies
         run: npm i
 
