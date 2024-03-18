@@ -54,5 +54,5 @@ jobs:
           DB_USER: $POSTGRES_USERNAME
           DB_PASSWORD: $POSTGRES_PASSWORD
           DB_HOST: 127.0.0.1
-          DB_NAME: $POSTGRES_DB
+          DB_NAME: userdb
           DB_PORT: 5432
