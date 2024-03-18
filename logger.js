@@ -14,14 +14,13 @@ const logger = winston.createLogger({
         winston.format.timestamp({
             format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
         }),
-    ),
-    transports: [
-        fileTransport
-    ],
+    )
 });
 
 if (process.env.NODE_ENV == 'testing') {
     logger.add(consoleTransport);
+} else {
+    logger.add(fileTransport);
 }
 
 module.exports = logger;
