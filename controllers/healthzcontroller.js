@@ -5,7 +5,7 @@ exports.getHealthz = async (req, res) => {
 
     if (req.body && (Object.keys(req.body).length || Object.keys(req.query).length)) {
         res.status(400).send();
-        logger.error(" Bad request to Healthz api");
+        // logger.error(" Bad request to Healthz api");
     }   
     res.setHeader('Cache-Control', 'no-cache');
     await sequelize.authenticate().then(() => {
