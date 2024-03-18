@@ -22,7 +22,6 @@ const logger = require('./logger');
       return res.status(401).send();
 
     } catch (error) {
-      // logger.error("Wrong credentials", { error });
       console.error('Error verifying credentials:', error);
 
       res.status(500).send('here it caused Internal Server Error');
