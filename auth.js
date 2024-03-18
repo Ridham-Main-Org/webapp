@@ -18,7 +18,7 @@ const logger = require('./logger');
           return next();
         }
       }
-      // logger.error("User unauthorized!");
+      logger.error("User unauthorized!");
       return res.status(401).send();
 
     } catch (error) {
