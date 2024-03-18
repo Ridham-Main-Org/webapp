@@ -12,6 +12,8 @@ jobs:
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_USER: ${{ secrets.DB_USERNAME }}
       DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
 
     steps:
       - name: Checkout code
@@ -41,6 +43,4 @@ jobs:
 
       - name: Run tests
         run: npm test
-        env:
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
+          
