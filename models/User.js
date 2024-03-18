@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const logger = require('./logger');
 
 const Sequelize = require('sequelize');
 const sequelize = require('../db');
@@ -50,9 +51,12 @@ User.prototype.validPassword = async (password, hash) => {
 sequelize.sync()
     .then(() => {
         console.log('Database synchronized!');
+        logger.info('Database synchronized!');
 })
     .catch((error) => {
         console.error('Failed to synchronize database:', error);
-});
+        logger.error('Failed to synchronize database',{error});
+    });
+
 module.exports = User;
 
