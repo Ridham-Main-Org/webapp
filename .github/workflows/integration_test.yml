@@ -9,9 +9,9 @@ jobs:
   connect-remote:
     runs-on: ubuntu-latest
     env:
-      POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      POSTGRES_USERNAME: ${{ secrets.DB_USERNAME }}
-      POSTGRES_DB: ${{ secrets.DB_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_USER: ${{ secrets.DB_USERNAME }}
+      DB_NAME: ${{ secrets.DB_NAME }}
 
     steps:
       - name: Checkout code
@@ -31,19 +31,10 @@ jobs:
 
       - name: Postgres Database and User creation 
         run: |
-          sudo -u postgres psql -c "CREATE USER $POSTGRES_USERNAME WITH PASSWORD '$POSTGRES_PASSWORD';" 2>/dev/null
-          sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;" 2>/dev/null
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to $POSTGRES_USERNAME;" 2>/dev/null
+          sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';" 2>/dev/null
+          sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;" 2>/dev/null
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME to $DB_USER;" 2>/dev/null
           sudo -u postgres psql -c "\l" 2>/dev/null
-
-      - name: create and configure
-        run: |
-            touch .env
-            echo DB_PORT=5432 >> .env
-            echo DB_HOST=127.0.0.1 >> .env
-            echo DB_USER=${{ secrets.DB_USERNAME }} >> .env
-            echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
 
       - name: Install dependencies
         run: npm i
@@ -51,8 +42,5 @@ jobs:
       - name: Run tests
         run: npm test
         env:
-          DB_USER: $POSTGRES_USERNAME
-          DB_PASSWORD: $POSTGRES_PASSWORD
           DB_HOST: 127.0.0.1
-          DB_NAME: userdb
           DB_PORT: 5432
