@@ -31,6 +31,6 @@ EOF
 )
 
 # Use sed to insert the YAML content after the license section
-sed -i '/^# limitations under the License.$/r /dev/stdin' "$config_file" <<< "$yaml_content"
+sudo sed -i '/^# limitations under the License.$/r /dev/stdin' "$config_file" <<< "$yaml_content"
 
 
