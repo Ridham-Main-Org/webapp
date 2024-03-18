@@ -6,6 +6,15 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 current_location=$(pwd)
 echo "Current location after installing Ops Agent: $current_location"
 
+# Create the directory if it doesn't exist
+sudo mkdir -p /var/webapp
+
+# Create an empty log file
+sudo touch /var/webapp/myapp.log
+
+# Set appropriate permissions if needed
+sudo chmod 644 /var/webapp/myapp.log
+
 config_file="/etc/google-cloud-ops-agent/config.yaml"
 
 # Define the YAML content to be inserted
@@ -15,7 +24,7 @@ logging:
     my-app-receiver:
       type: files
       include_paths:
-        - /tmp/myapp.log
+        - /var/webapp/myapp.log
       record_log_file_path: true
   processors:
     my-app-processor:
