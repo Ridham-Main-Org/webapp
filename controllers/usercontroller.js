@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const logger = require('./logger');
+const logger = require('../logger');
 
 const { validateEmptyAndType, isEmailValid, isNameValid } = require('../util');
 

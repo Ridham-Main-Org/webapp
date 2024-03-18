@@ -6,9 +6,9 @@ const fileTransport = new winston.transports.File({ filename: 'logs/app.log' });
 
 const logger = winston.createLogger({
     level: 'info',
-    format: combine(
-        json(),
-        timestamp({
+    format: winston.format.combine(
+        winston.format.json(),
+        winston.format.timestamp({
             format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
         }),
     ),
@@ -19,4 +19,4 @@ const logger = winston.createLogger({
 });
 
 
-module.exports = createLogger;
+module.exports = logger;

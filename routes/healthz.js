@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const healthzController = require('../controllers/healthzcontroller');
-const logger = require('./logger');
+const logger = require('../logger');
 
 router.get('/', healthzController.getHealthz);
 
