@@ -2,7 +2,10 @@ const winston = require('winston');
 
 // Define transports for console and file logging
 const consoleTransport = new winston.transports.Console();
-const fileTransport = new winston.transports.File({ filename: 'logs/app.log' });
+const fileTransport = new winston.transports.File({ filename: '/var/webapp/myapp.log' });
+const dotenv = require('dotenv');
+dotenv.config({ path: __dirname + "/.env" });
+
 
 const logger = winston.createLogger({
     level: 'info',
@@ -13,10 +16,12 @@ const logger = winston.createLogger({
         }),
     ),
     transports: [
-        consoleTransport,
         fileTransport
-    ]
+    ],
 });
 
+if (process.env.NODE_ENV == 'testing') {
+    logger.add(consoleTransport);
+}
 
 module.exports = logger;
