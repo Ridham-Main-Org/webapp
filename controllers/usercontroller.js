@@ -120,12 +120,12 @@ const updateUser = async (req, res) => {
         const reqBody = req.body;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            logger.info("Allowed fields not specified",{reqBody});
+            logger.info("Allowed fields not specified");
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            logger.info("Invalid values in the request body",{reqBody});
+            logger.info("Invalid values in the request body");
             return res.status(400).send();
         };
 
