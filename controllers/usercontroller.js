@@ -62,7 +62,7 @@ const createUser = async (req, res) => {
         const { username, password, first_name, last_name } = req.body;
         const exisitingUser = await User.findOne({ where: { username } });
         if (exisitingUser) {
-            logger.info("User with this email already exists");
+            // logger.info("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
         
@@ -81,7 +81,7 @@ const createUser = async (req, res) => {
             account_created: newUser.account_created,
             account_updated: newUser.account_updated,
         };
-        logger.info("User created successfully");
+        // logger.info("User created successfully");
         return res.status(201).json(userWithoutPassword);
 
     } catch (error) {
