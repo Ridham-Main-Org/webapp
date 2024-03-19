@@ -6,41 +6,46 @@ on:
 
 
 jobs:
-  connect-remote:
+  integration-tests:
     runs-on: ubuntu-latest
-
+    env:
+      POSTGRES_USER: ${{ secrets.DB_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.DB_NAME }}
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
+ 
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: 21
-
+          node-version: ${{ matrix.node-version }}
+      
       - name: Install Postgres
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql postgresql-contrib
           sudo systemctl start postgresql
           sudo systemctl enable postgresql
-          
-      - name: Postgres Database and User creation 
+ 
+      - name: Create Postgres Database and User
         run: |
-          sudo -u postgres psql -c "CREATE USER ridham WITH PASSWORD 'postgres';" 2>/dev/null
-          sudo -u postgres psql -c "CREATE DATABASE userdb;" 2>/dev/null
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE userdb to ridham;" 2>/dev/null
-          sudo -u postgres psql -c "\l"
-
+          sudo -u postgres psql -c "CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';" 2>/dev/null
+          sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;" 2>/dev/null
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB to $POSTGRES_USER;" 2>/dev/null
+ 
       - name: Install dependencies
-        run: npm i
+        run: npm install
 
       - name: Run tests
         run: npm test
         env:
-          DB_USER: ridham
-          DB_PASSWORD: postgres
+          DB_USER: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: 127.0.0.1
-          DB_NAME: userdb
+          DB_NAME: ${{ secrets.DB_NAME }}
           DB_PORT: 5432
           NODE_ENV: testing
