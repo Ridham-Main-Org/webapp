@@ -51,11 +51,11 @@ User.prototype.validPassword = async (password, hash) => {
 sequelize.sync()
     .then(() => {
         console.log('Database synchronized!');
-        // logger.info('Database synchronized!');
+        logger.info('Database synchronized!');
 })
     .catch((error) => {
         console.error('Failed to synchronize database:', error);
-        // logger.error('Failed to synchronize database');
+        logger.error('Failed to synchronize database');
     });
 
 module.exports = User;
