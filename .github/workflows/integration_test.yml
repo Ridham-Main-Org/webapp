@@ -31,7 +31,8 @@ jobs:
       - name: Create Postgres Database and User
         run: |
           sudo -u postgres psql -c "CREATE USER ridham WITH PASSWORD 'password';" 2>/dev/null
-          sudo -u postgres psql -c "CREATE DATABASE userdb" 2>/dev/null
+          sudo -u postgres psql -c "DROP DATABASE IF EXISTS userdb;" 2>/dev/null
+          sudo -u postgres psql -c "CREATE DATABASE userdb;" 2>/dev/null
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE userdb to ridham;" 2>/dev/null
  
       - name: Install dependencies
