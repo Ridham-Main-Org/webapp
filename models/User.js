@@ -55,7 +55,7 @@ sequelize.sync()
 })
     .catch((error) => {
         console.error('Failed to synchronize database:', error);
-        logger.error('Failed to synchronize database',{error});
+        logger.error('Failed to synchronize database');
     });
 
 module.exports = User;
