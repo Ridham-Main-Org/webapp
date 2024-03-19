@@ -6,44 +6,47 @@ on:
 
 
 jobs:
-  integration-tests:
+  connect-remote:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USERNAME: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: UserDB
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
- 
-      - name: Set up Node.js ${{ matrix.node-version }}
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      
-      - name: Install Postgres
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          sudo systemctl start postgresql
-          sudo systemctl enable postgresql
- 
-      - name: Create Postgres Database and User
-        run: |
-          sudo -u postgres psql -c "CREATE USER ridham WITH PASSWORD 'password';" 2>/dev/null
-          sudo -u postgres psql -c "DROP DATABASE IF EXISTS userdb;" 2>/dev/null
-          sudo -u postgres psql -c "CREATE DATABASE userdb;" 2>/dev/null
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE userdb to ridham;" 2>/dev/null
- 
+          node-version: 21
+
+      # - name: Install PostgreSQL client
+      #   run: |
+      #     apt-get update
+      #     apt-get install --yes postgresql-client
+
       - name: Install dependencies
-        run: npm install
+        run: npm i
 
       - name: Run tests
         run: npm test
         env:
-          DB_USER: ridham
-          DB_PASSWORD: password
-          DB_HOST: 127.0.0.1
-          DB_NAME: userdb
+          DB_USER: "postgres"
+          DB_PASSWORD: "postgres"
+          DB_HOST: "127.0.0.1"
+          DB_NAME: "UserDB"
           DB_PORT: 5432
-          NODE_ENV: testing
