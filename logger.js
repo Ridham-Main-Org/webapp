@@ -8,6 +8,7 @@ dotenv.config({ path: __dirname + "/.env" });
 
 
 const logger = winston.createLogger({
+    level: 'debug',
     format: winston.format.combine(
         winston.format.json(),
         winston.format.timestamp({
@@ -16,10 +17,10 @@ const logger = winston.createLogger({
     )
 });
 
-// if (process.env.NODE_ENV === 'testing') {
+if (process.env.NODE_ENV === 'testing') {
     logger.add(consoleTransport);
-// } else {
-//     logger.add(new winston.transports.File({ filename: '/var/webapp/myapp.log' }));
-// }
+} else {
+    logger.add(new winston.transports.File({ filename: '/var/webapp/myapp.log' }));
+}
 
 module.exports = logger;
