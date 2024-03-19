@@ -9,7 +9,7 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     env:
-      POSTGRES_USER: ${{ secrets.DB_USER }}
+      POSTGRES_USER: ${{ secrets.DB_USERNAME }}
       POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
       POSTGRES_DB: ${{ secrets.DB_NAME }}
     strategy:
