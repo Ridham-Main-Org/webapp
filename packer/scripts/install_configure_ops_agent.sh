@@ -42,4 +42,6 @@ EOF
 # Use sed to insert the YAML content after the license section
 sudo sed -i '/^# limitations under the License.$/r /dev/stdin' "$config_file" <<< "$yaml_content"
 
+sudo systemctl restart google-cloud-ops-agent
+sudo systemctl enable google-cloud-ops-agent
 
