@@ -46,16 +46,16 @@ const createUser = async (req, res) => {
         delete req.body.account_updated;
         
         if (!req.body.username) {
-            logger.error("Username not provided!");
+            // logger.error("Username not provided!");
             return res.status(400).send();
         }   
         if (!isEmailValid(req.body.username)) {
-            logger.error("Invalid email!");
+            // logger.error("Invalid email!");
             return res.status(400).send();
         }
 
         if (!checkAllowedFields(req.body,new Set(['first_name', 'last_name', 'password','username'])) || !validateFields(req.body)) {
-            logger.error("Allowed fields not specified");
+            // logger.error("Allowed fields not specified");
             return res.status(400).send();
         };
 
@@ -105,7 +105,7 @@ const getUser = async (req, res) => {
         account_created: userData.account_created,
         account_updated: userData.account_updated,
     }
-    logger.info("Get user successful");
+    // logger.info("Get user successful");
     res.status(200).json(responseData);
 }
 
@@ -119,12 +119,12 @@ const updateUser = async (req, res) => {
         const reqBody = req.body;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            logger.info("Allowed fields not specified");
+            // logger.info("Allowed fields not specified");
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            logger.info("Invalid values in the request body");
+            // logger.info("Invalid values in the request body");
             return res.status(400).send();
         };
 
@@ -135,7 +135,7 @@ const updateUser = async (req, res) => {
                 username: req.user.username,
             },
         });
-        logger.info("User updated successfully");
+        // logger.info("User updated successfully");
         res.status(204).send();
 
     } catch (error) {
