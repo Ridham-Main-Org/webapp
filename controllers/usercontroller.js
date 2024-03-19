@@ -85,6 +85,7 @@ const createUser = async (req, res) => {
         return res.status(201).json(userWithoutPassword);
 
     } catch (error) {
+        logger.error("Bad request in creating user");
         res.status(400).send();
     }
 }
@@ -139,6 +140,7 @@ const updateUser = async (req, res) => {
         res.status(204).send();
 
     } catch (error) {
+        logger.error("Bad request in updating user");
         res.status(400).send();
     }
 }
