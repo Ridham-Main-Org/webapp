@@ -8,7 +8,6 @@ dotenv.config({ path: __dirname + "/.env" });
 
 
 const logger = winston.createLogger({
-    level: 'info',
     format: winston.format.combine(
         winston.format.json(),
         winston.format.timestamp({
