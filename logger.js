@@ -10,7 +10,6 @@ dotenv.config({ path: __dirname + "/.env" });
 const logger = winston.createLogger({
     level: 'debug',
     format: winston.format.combine(
-        // winston.format(info => ({ ...info, level: info.level.toUpperCase() }))(),
         winston.format.json(),
         winston.format.timestamp({
             format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
@@ -18,9 +17,9 @@ const logger = winston.createLogger({
         // winston.format.printf(
         //     ({ timestamp, level, message }) => `${timestamp} [${level}]: ${message}`
         // ),
-        // winston.format.printf(info => {
-        //     return JSON.stringify({ time: info.timestamp, message: info.message });
-        // })
+        winston.format.printf(info => {
+            return JSON.stringify({ level: info.level, time: info.timestamp, message: info.message });
+        })
     )
 });
 

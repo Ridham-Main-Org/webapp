@@ -55,14 +55,14 @@ const createUser = async (req, res) => {
         }
 
         if (!checkAllowedFields(req.body,new Set(['first_name', 'last_name', 'password','username'])) || !validateFields(req.body)) {
-            logger.error("Allowed fields not specified");
+            logger.warn("Allowed fields not specified");
             return res.status(400).send();
         };
 
         const { username, password, first_name, last_name } = req.body;
         const exisitingUser = await User.findOne({ where: { username } });
         if (exisitingUser) {
-            logger.info("User with this email already exists");
+            logger.error("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
         
@@ -96,6 +96,7 @@ User GET api
 const getUser = async (req, res) => {
     const userData = req.user;
     if (req.body && (Object.keys(req.body).length || Object.keys(req.query).length)) {
+        logger.error("Bad request in GET api");
         return res.status(400).send();
     }
     const responseData = {
@@ -120,12 +121,12 @@ const updateUser = async (req, res) => {
         const reqBody = req.body;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
-            logger.info("Allowed fields not specified");
+            logger.warn("Allowed fields not specified");
             return res.status(400).send();
         };
 
         if (!validateFields(req.body)) {
-            logger.info("Invalid values in the request body");
+            logger.error("Invalid values in the request body");
             return res.status(400).send();
         };
 
