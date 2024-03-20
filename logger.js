@@ -16,13 +16,13 @@ const logger = winston.createLogger({
         // winston.format.prettyPrint(),
         winston.format.json(),
         // winston.format.errors({ stack: true }),
+        winston.format.timestamp({
+            format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
+            // format: 'YYYY-MM-DD HH:mm:ss.SSSZ',
+        }),
         winston.format.printf(
             ({ timestamp, level, message }) => `${timestamp} [${level}]: ${message}`
         ),
-        winston.format.timestamp({
-            // format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
-            format: 'YYYY-MM-DD HH:mm:ss.SSSZ',
-        }),
     )
 });
 
