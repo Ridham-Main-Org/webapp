@@ -7,13 +7,13 @@ current_location=$(pwd)
 echo "Current location after installing Ops Agent: $current_location"
 
 # Create the directory if it doesn't exist
-sudo mkdir -p /var/webapp
+sudo mkdir -p /var/log/webapp
 
 # Create an empty log file
-sudo touch /var/webapp/myapp.log
+sudo touch /var/log/webapp/myapp.log
 
 # Set appropriate permissions if needed
-sudo chmod 644 /var/webapp/myapp.log
+sudo chmod 644 /var/log/webapp/myapp.log
 
 config_file="/etc/google-cloud-ops-agent/config.yaml"
 
