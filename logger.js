@@ -10,10 +10,18 @@ dotenv.config({ path: __dirname + "/.env" });
 const logger = winston.createLogger({
     level: 'debug',
     format: winston.format.combine(
+        winston.format(info => ({ ...info, level: info.level.toUpperCase() }))(),
+        winston.format.align(),
+        winston.format.colorize(),
+        winston.format.prettyPrint(),
         winston.format.json(),
+        winston.format.errors({ stack: true }),
+        winston.format.printf(
+            ({ timestamp, level, message }) => `${timestamp} [${level}]: ${message}`
+        ),
         winston.format.timestamp({
             // format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
-            format: 'YYYY-MM-DD hh:mm:ss.SSSZ',
+            format: 'YYYY-MM-DD HH:mm:ss.SSS EDT',
         }),
     )
 });

@@ -30,12 +30,18 @@ logging:
     my-app-processor:
       type: parse_json
       time_key: time
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%d %H:%M:%S.%L%Z"
     move_severity:
       type: modify_fields
+          map_values:
+            debug: DEBUG
+            info: INFO
+            warn: WARN
+            error: ERROR
+            fatal: FATAL
       fields:
         severity:
-          move_from: jsonPayload.severity
+          move_from: jsonPayload.level
   service:
     pipelines:
       default_pipeline:
