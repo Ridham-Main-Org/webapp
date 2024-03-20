@@ -10,7 +10,7 @@ dotenv.config({ path: __dirname + "/.env" });
 const logger = winston.createLogger({
     level: 'debug',
     format: winston.format.combine(
-        winston.format(info => ({ ...info, level: info.level.toUpperCase() }))(),
+        // winston.format(info => ({ ...info, level: info.level.toUpperCase() }))(),
         // winston.format.align(),
         // winston.format.colorize(),
         // winston.format.prettyPrint(),
