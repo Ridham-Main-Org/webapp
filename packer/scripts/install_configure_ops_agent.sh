@@ -33,15 +33,9 @@ logging:
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
     move_severity:
       type: modify_fields
-          map_values:
-            debug: DEBUG
-            info: INFO
-            warn: WARN
-            error: ERROR
-            fatal: FATAL
       fields:
         severity:
-          move_from: jsonPayload.level
+          move_from: jsonPayload.severity
   service:
     pipelines:
       default_pipeline:
