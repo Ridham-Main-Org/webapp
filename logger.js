@@ -14,9 +14,6 @@ const logger = winston.createLogger({
         winston.format.timestamp({
             format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
         }),
-        // winston.format.printf(
-        //     ({ timestamp, level, message }) => `${timestamp} [${level}]: ${message}`
-        // ),
         winston.format.printf(info => {
             return JSON.stringify({ level: info.level, time: info.timestamp, message: info.message });
         })
