@@ -1,6 +1,6 @@
 ## webapp Instructions
 
-### test1
+### test-app
 - Clone the repository
 - Go to the root of the project
 
