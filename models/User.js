@@ -29,7 +29,17 @@ const User = sequelize.define("user", {
     password: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false
-    }
+    },
+    expiration_time: {
+        type: Sequelize.DataTypes.STRING,  
+    },
+    token: {
+        type: Sequelize.DataTypes.STRING,
+    },
+    status: {
+        type: Sequelize.DataTypes.STRING,
+        defaultValue: 'not verified',
+    },
 },  
 {   
     createdAt: 'account_created',
