@@ -4,6 +4,9 @@ const logger = require('../logger');
 const pubsub = require('./pubsubcontroller');
 const verifycontroller = require('./verifycontroller');
 
+const dotenv = require('dotenv');
+dotenv.config({ path: __dirname + "/.env" });
+
 const { validateEmptyAndType, isEmailValid, isNameValid } = require('../util');
 
 const validateFields = (body) => {
@@ -107,28 +110,40 @@ const getUser = async (req, res) => {
         return res.status(400).send();
     }
     try {
-        const verifyRes = await verifycontroller.isUserVerified();
+        // const verifyRes = await verifycontroller.isUserVerified();
         let responseData;
-        if (verifyRes && res.verifyRes) {
-            if (verificationStatus === 'not verified') {
-                logger.error("User not verified");
-                res.status(403).json({ error: 'User not verified' });
-            } else {
-                responseData = {
-                    id: userData.id,
-                    username: userData.username,
-                    first_name: userData.first_name,
-                    last_name: userData.last_name,
-                    account_created: userData.account_created,
-                    account_updated: userData.account_updated,
-                    status: verificationStatus,
-                }
-                logger.info("Get user successful with verified status");
-                res.status(200).json(responseData);
-            }  
+        responseData = {
+            id: userData.id,
+            username: userData.username,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            account_created: userData.account_created,
+            account_updated: userData.account_updated,
+            status: verificationStatus,
         }
-        logger.error("Verification status not found");
-        res.status(403).json({ error: 'Verification status not found' });
+        logger.info("Get user successful with verified status");
+        res.status(200).json(responseData);
+
+        // if ( verifyRes && res.verifyRes) {
+        //     if (verificationStatus === 'not verified') {
+        //         logger.error("User not verified");
+        //         res.status(403).json({ error: 'User not verified' });
+        //     } else {
+        //         responseData = {
+        //             id: userData.id,
+        //             username: userData.username,
+        //             first_name: userData.first_name,
+        //             last_name: userData.last_name,
+        //             account_created: userData.account_created,
+        //             account_updated: userData.account_updated,
+        //             status: verificationStatus,
+        //         }
+        //         logger.info("Get user successful with verified status");
+        //         res.status(200).json(responseData);
+        //     }  
+        // }
+        // logger.error("Verification status not found");
+        // res.status(403).json({ error: 'Verification status not found' });
     } catch (error) {
         logger.error("Error in getUser, here it caused Internal server error");
         res.status(500).json({ error: 'here it caused Internal server error' });
