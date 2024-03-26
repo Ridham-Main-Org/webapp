@@ -119,7 +119,7 @@ const getUser = async (req, res) => {
             last_name: userData.last_name,
             account_created: userData.account_created,
             account_updated: userData.account_updated,
-            status: verificationStatus,
+            // status: verificationStatus,
         }
         logger.info("Get user successful with verified status");
         res.status(200).json(responseData);
