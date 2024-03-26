@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const logger = require('../logger');
+const pubsub = require('./pubsubcontroller');
+const verifycontroller = require('./verifycontroller');
 
 const { validateEmptyAndType, isEmailValid, isNameValid } = require('../util');
 
@@ -65,7 +67,12 @@ const createUser = async (req, res) => {
             logger.error("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
-        
+        const topic= 'projects/celestial-gecko-414117/topics/demotopic'
+        const data = JSON.stringify({ username: username });
+        console.log("reached here");
+        logger.info("reached here- before publishing message");
+        await pubsub.publishMessage(topic, data);
+        logger.info("message published");
         const newUser = await User.create({
             username,
             password,
@@ -99,16 +106,33 @@ const getUser = async (req, res) => {
         logger.error("Bad request in GET api");
         return res.status(400).send();
     }
-    const responseData = {
-        id: userData.id,
-        username: userData.username,
-        first_name: userData.first_name,
-        last_name: userData.last_name,
-        account_created: userData.account_created,
-        account_updated: userData.account_updated,
+    try {
+        const verifyRes = await verifycontroller.isUserVerified();
+        let responseData;
+        if (verifyRes && res.verifyRes) {
+            if (verificationStatus === 'not verified') {
+                logger.error("User not verified");
+                res.status(403).json({ error: 'User not verified' });
+            } else {
+                responseData = {
+                    id: userData.id,
+                    username: userData.username,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    account_created: userData.account_created,
+                    account_updated: userData.account_updated,
+                    status: verificationStatus,
+                }
+                logger.info("Get user successful with verified status");
+                res.status(200).json(responseData);
+            }  
+        }
+        logger.error("Verification status not found");
+        res.status(403).json({ error: 'Verification status not found' });
+    } catch (error) {
+        logger.error("Error in getUser, here it caused Internal server error");
+        res.status(500).json({ error: 'here it caused Internal server error' });
     }
-    logger.info("Get user successful");
-    res.status(200).json(responseData);
 }
 
 /*
