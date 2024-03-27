@@ -1,6 +1,9 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const logger = require('../logger');
+// const logger = require('../logger');
+
+const { getLogger } = require('../logger');
+const logger = getLogger();
 const pubsub = require('./pubsubcontroller');
 
 const dotenv = require('dotenv');

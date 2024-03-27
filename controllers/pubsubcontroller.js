@@ -1,6 +1,9 @@
 // Import the Google Cloud client library
 const { PubSub } = require('@google-cloud/pubsub');
-const logger = require('../logger'); // Ensure logger is properly implemented
+// const logger = require('../logger'); // Ensure logger is properly implemented
+
+const { getLogger } = require('../logger');
+const logger = getLogger();
 
 // Create a Pub/Sub client; cache this for further use
 const pubSubClient = new PubSub();
