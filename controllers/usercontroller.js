@@ -2,7 +2,6 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const logger = require('../logger');
 const pubsub = require('./pubsubcontroller');
-const verifycontroller = require('./verifycontroller');
 
 const dotenv = require('dotenv');
 dotenv.config({ path: __dirname + "/.env" });
@@ -71,7 +70,6 @@ const createUser = async (req, res) => {
             return res.status(400).json({ error: 'User with this email already exists' });
         }
         const topic = process.env.TOPIC_NAME;
-        // const topic= 'projects/celestial-gecko-414117/topics/demotopic'
         const data = JSON.stringify({ username: username });
 
         await pubsub.publishMessage(topic, data);
