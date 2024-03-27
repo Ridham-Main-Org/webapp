@@ -70,7 +70,7 @@ const createUser = async (req, res) => {
             logger.error("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
-        const topic = process.env.TOPIC_NAME
+        const topic = process.env.TOPIC_NAME;
         // const topic= 'projects/celestial-gecko-414117/topics/demotopic'
         const data = JSON.stringify({ username: username });
 
