@@ -70,12 +70,11 @@ const createUser = async (req, res) => {
             logger.error("User with this email already exists");
             return res.status(400).json({ error: 'User with this email already exists' });
         }
-        const topic= 'projects/celestial-gecko-414117/topics/demotopic'
+        const topic = process.env.TOPIC_NAME
+        // const topic= 'projects/celestial-gecko-414117/topics/demotopic'
         const data = JSON.stringify({ username: username });
-        console.log("reached here");
-        logger.info("reached here- before publishing message");
+
         await pubsub.publishMessage(topic, data);
-        logger.info("message published");
         const newUser = await User.create({
             username,
             password,
@@ -110,43 +109,28 @@ const getUser = async (req, res) => {
         return res.status(400).send();
     }
     try {
-        // const verifyRes = await verifycontroller.isUserVerified();
-        let responseData;
-        responseData = {
+        if (process.env.NODE_ENV != "testing") {
+            // const existingUser = User.findOne({ where: { username } });
+            if (userData.status === 'not verified') {
+                logger.error('Access forbidden due to unverified status');
+                return res.status(403).json({ error: 'Access forbidden due to unverified status' });
+            }
+        }
+        const responseData = {
             id: userData.id,
             username: userData.username,
             first_name: userData.first_name,
             last_name: userData.last_name,
             account_created: userData.account_created,
             account_updated: userData.account_updated,
-            // status: verificationStatus,
         }
+
         logger.info("Get user successful with verified status");
         res.status(200).json(responseData);
 
-        // if ( verifyRes && res.verifyRes) {
-        //     if (verificationStatus === 'not verified') {
-        //         logger.error("User not verified");
-        //         res.status(403).json({ error: 'User not verified' });
-        //     } else {
-        //         responseData = {
-        //             id: userData.id,
-        //             username: userData.username,
-        //             first_name: userData.first_name,
-        //             last_name: userData.last_name,
-        //             account_created: userData.account_created,
-        //             account_updated: userData.account_updated,
-        //             status: verificationStatus,
-        //         }
-        //         logger.info("Get user successful with verified status");
-        //         res.status(200).json(responseData);
-        //     }  
-        // }
-        // logger.error("Verification status not found");
-        // res.status(403).json({ error: 'Verification status not found' });
     } catch (error) {
-        logger.error("Error in getUser, here it caused Internal server error");
-        res.status(500).json({ error: 'here it caused Internal server error' });
+        logger.error("Error in getUser");
+        res.status(400).json({ error: 'Bad request in getting user' });
     }
 }
 
@@ -157,7 +141,7 @@ const updateUser = async (req, res) => {
     try{
         delete req.body.account_created;
         delete req.body.account_updated;
-        const reqBody = req.body;
+        const userData = req.user;
 
         if (!checkAllowedFields(req.body, new Set(['first_name', 'last_name', 'password']))) {
             logger.warn("Allowed fields not specified");
@@ -168,6 +152,13 @@ const updateUser = async (req, res) => {
             logger.error("Invalid values in the request body");
             return res.status(400).send();
         };
+        if (process.env.NODE_ENV != "testing") {
+            // const existingUser = User.findOne({ where: { username } });
+            if (userData.status === 'not verified') {
+                logger.error('Cannot Update user because the user is unverified');
+                return res.status(403).json({ error: 'Cannot Update user because the user is unverified' });
+            }
+        }
 
         req.body.password = await bcrypt.hash(req.body.password, 10);
 

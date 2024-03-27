@@ -1,24 +1,22 @@
-// Imports the Google Cloud client library
-const {PubSub} = require('@google-cloud/pubsub');
-const logger = require('../logger');
+// Import the Google Cloud client library
+const { PubSub } = require('@google-cloud/pubsub');
+const logger = require('../logger'); // Ensure logger is properly implemented
 
-// Creates a client; cache this for further use
+// Create a Pub/Sub client; cache this for further use
 const pubSubClient = new PubSub();
 
 async function publishMessage(topicNameOrId, data) {
-    logger.info("inside publishMessage method");
+    logger.debug("Inside publishMessage method");
     const dataBuffer = Buffer.from(data);
 
     try {
-    const messageId = await pubSubClient
-        .topic(topicNameOrId)
-        .publishMessage({data: dataBuffer});
+        // Publish the message and await the result
+        const [messageId] = await pubSubClient.topic(topicNameOrId).publishMessage(dataBuffer);
         console.log(`Message ${messageId} published.`);
-        logger.info('Message published');
+        logger.info(`Message ${messageId} published`);
     } catch (error) {
         console.error(`Received error while publishing: ${error.message}`);
-        logger.error(" Received error while publishing message to topic inside publishMessage");
-        process.exitCode = 1;
+        logger.error("Received error while publishing message to topic inside publishMessage");
     }
 }
 
