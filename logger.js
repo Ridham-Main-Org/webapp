@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: __dirname + "/.env" });
  
 let loggerInstance = null;
-let envType = '';
+let envType = process.env.NODE_ENV || '';
  
 function initializeLogger() {
   let logTransport;
@@ -28,13 +28,14 @@ function initializeLogger() {
   });
 }
  
-export function getLogger() {
+function getLogger() {
   if (!loggerInstance) {
     loggerInstance = initializeLogger(envType);
   }
   return loggerInstance;
 }
 
+module.exports = getLogger;
 
 
 // const winston = require('winston');
