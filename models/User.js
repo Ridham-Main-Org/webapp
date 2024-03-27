@@ -33,9 +33,6 @@ const User = sequelize.define("user", {
     expiration_time: {
         type: Sequelize.DataTypes.STRING,  
     },
-    token: {
-        type: Sequelize.DataTypes.STRING,
-    },
     status: {
         type: Sequelize.DataTypes.STRING,
         defaultValue: 'not verified',
