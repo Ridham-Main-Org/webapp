@@ -1,4 +1,5 @@
-const { createLogger, transports, format } = require('winston');
+// const { createLogger, transports, format } = require('winston');
+const winston = require('winston');
 
 const dotenv = require('dotenv');
 dotenv.config({ path: __dirname + "/.env" });
@@ -11,17 +12,17 @@ function initializeLogger() {
   let logFormat;
  
   if (process.env.NODE_ENV === 'testing') {
-    logTransport = new transports.Console();
-    logFormat = format.json();
+    logTransport = new winston.transports.Console();
+    logFormat = winston.format.json();
   } else {
-    logTransport = new transports.File({ filename: '/var/log/webapp/myapp.log' });
-    logFormat = format.combine(
-      format.timestamp(),
-      format.json()
+    logTransport = new winston.transports.File({ filename: '/var/log/webapp/myapp.log' });
+    logFormat = winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
     );
   }
  
-  return createLogger({
+  return winston.createLogger({
     level: 'debug',
     format: logFormat,
     transports: [logTransport]
@@ -35,7 +36,7 @@ function getLogger() {
   return loggerInstance;
 }
 
-module.exports = getLogger;
+module.exports = { getLogger};
 
 
 // const winston = require('winston');
