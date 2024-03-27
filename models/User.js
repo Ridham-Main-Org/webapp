@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
-const logger = require('../logger');
+// const logger = require('../logger');
+
+const { getLogger } = require('../logger');
+const logger = getLogger();
 
 const Sequelize = require('sequelize');
 const sequelize = require('../db');

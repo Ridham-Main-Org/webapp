@@ -3,7 +3,10 @@ const healthzRoutes = require('./routes/healthz');
 const userRoutes = require('./routes/user');
 const app = express();
 const { User } = require('./models/User');
-const logger = require('./logger');
+// const logger = require('./logger');
+
+const { getLogger } = require('./logger');
+const logger = getLogger();
 
 app.use(express.json());
 

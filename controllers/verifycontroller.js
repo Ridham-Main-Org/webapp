@@ -1,4 +1,6 @@
-const logger = require('../logger');
+// const logger = require('../logger');
+const { getLogger } = require('../logger');
+const logger = getLogger();
 const User = require('../models/User');
 
 const isUserVerified = async (req, res) => {
