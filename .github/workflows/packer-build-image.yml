@@ -76,41 +76,32 @@ jobs:
       - name: Packer Init
         run: packer init ./packer/gcp-centos8.pkr.hcl
 
-      # - name: Packer Build
-      #   run: |
-      #     packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl
-      
-      # - name: Build Packer Template
-      #   run: |
-      #     PACKER_OUTPUT=$(packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl 2>&1)
-      #     CUSTOM_IMAGE_ID=$(echo "$PACKER_OUTPUT" | grep -oP "webapp-image-\d+")
-      #     echo "Custom Image ID: $CUSTOM_IMAGE_ID"
-      #     TIMESTAMP=$(date +"%d%H%M%S")
-      #     gcloud compute instance-templates create instance-temp-${TIMESTAMP} --source-instance=${{ secrets.SOURCE_INSTANCE }} --source-instance-zone=${{ secrets.SOURCE_INSTANCE_ZONE }} --instance-template-region=${{ secrets.REGION }} --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=projects/celestial-gecko-414117/global/images/$CUSTOM_IMAGE_ID,auto-delete=yes
-      #     gcloud compute instance-groups managed set-instance-template ${{ secrets.INSTANCE_GROUP_MANAGER }} --template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=${{ secrets.REGION }}
-      #     gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_MANAGER }} --version=template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=${{ secrets.REGION }}
-          
-      # - name: Wait for Target Reach
-      #   run: gcloud compute instance-groups managed wait-until ${{ secrets.INSTANCE_GROUP_MANAGER }} --version-target-reached --region=${{ secrets.REGION }}
       - name: Build Packer Template
         run: |
           PACKER_OUTPUT=$(packer build \
             -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' \
             -var 'zone=${{ secrets.GCP_ZONE }}' \
-            ./packer/gcp-centos8.pkr.hcl 2>&1)
+            ./packer/gcp-centos8.pkr.hcl)
+          
           CUSTOM_IMAGE_ID=$(echo "$PACKER_OUTPUT" | grep -oP "webapp-image-\d+")
           echo "Custom Image ID: $CUSTOM_IMAGE_ID"
-          TIMESTAMP=$(date +"%d%H%M%S")
-          gcloud compute instance-templates create instance-temp-${TIMESTAMP} \
+          NEW_TEMPLATE_NAME="new-template-$(openssl rand -hex 4)"
+
+          TEMPLATE_PATH="projects/${{ secrets.GCP_PROJECT_NUM }}/regions/${{ secrets.REGION }}/instanceTemplates"
+          CUSTOM_IMAGE_PATH="projects/${{ secrets.GCP_PROJECT_ID }}/global/images"
+
+          gcloud compute instance-templates create $NEW_TEMPLATE_NAME \
             --source-instance=${{ secrets.SOURCE_INSTANCE }} \
             --source-instance-zone=${{ secrets.SOURCE_INSTANCE_ZONE }} \
             --instance-template-region=${{ secrets.REGION }} \
-            --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=projects/celestial-gecko-414117/global/images/$CUSTOM_IMAGE_ID,auto-delete=yes
+            --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=$CUSTOM_IMAGE_PATH/$CUSTOM_IMAGE_ID,auto-delete=yes
+          
           gcloud compute instance-groups managed set-instance-template ${{ secrets.INSTANCE_GROUP_MANAGER }} \
-            --template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} \
+            --template=$TEMPLATE_PATH/$NEW_TEMPLATE_NAME \
             --region=${{ secrets.REGION }}
+          
           gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_MANAGER }} \
-            --version=template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} \
+            --version=template=$TEMPLATE_PATH/$NEW_TEMPLATE_NAME \
             --region=${{ secrets.REGION }}
 
       - name: Wait for Target Reach
