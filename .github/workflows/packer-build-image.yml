@@ -86,6 +86,6 @@ jobs:
           CUSTOM_IMAGE_ID=$(echo "$PACKER_OUTPUT" | grep -oP "webapp-image-\d+")
           echo "Custom Image ID: $CUSTOM_IMAGE_ID"
           TIMESTAMP=$(date +"%d%H%M%S")
-          gcloud compute instance-templates create instance-temp-${TIMESTAMP} --source-instance=app-pd0z --source-instance-zone=us-east1-c --instance-template-region=us-east1 --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=projects/celestial-gecko-414117/global/images/$CUSTOM_IMAGE_ID,auto-delete=yes
-          gcloud compute instance-groups managed set-instance-template webapp-igm --template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
-          gcloud compute instance-groups managed rolling-action start-update webapp-igm --version=template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
+          gcloud compute instance-templates create instance-temp-${TIMESTAMP} --source-instance=${{ secrets.SOURCE_INSTANCE }} --source-instance-zone=us-east1-c --instance-template-region=us-east1 --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=projects/celestial-gecko-414117/global/images/$CUSTOM_IMAGE_ID,auto-delete=yes
+          gcloud compute instance-groups managed set-instance-template ${{ secrets.INSTANCE_GROUP_MANAGER }} --template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
+          gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_MANAGER }} --version=template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
