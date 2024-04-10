@@ -76,6 +76,16 @@ jobs:
       - name: Packer Init
         run: packer init ./packer/gcp-centos8.pkr.hcl
 
-      - name: Packer Build
-        run: |
-          packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl
+      # - name: Packer Build
+      #   run: |
+      #     packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl
+      
+      - name: Build Packer Template
+        run: | 
+          PACKER_OUTPUT=$(packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'zone=${{ secrets.GCP_ZONE }}' ./packer/gcp-centos8.pkr.hcl 2>&1)
+          CUSTOM_IMAGE_ID=$(echo "$PACKER_OUTPUT" | grep -oP "webapp-image-\d+")
+          echo "Custom Image ID: $CUSTOM_IMAGE_ID"
+          TIMESTAMP=$(date +"%d%H%M%S")
+          gcloud compute instance-templates create instance-temp-${TIMESTAMP} --source-instance=app-pd0z --source-instance-zone=us-east1-c --instance-template-region=us-east1 --configure-disk=device-name=persistent-disk-0,instantiate-from=custom-image,custom-image=projects/celestial-gecko-414117/global/images/$CUSTOM_IMAGE_ID,auto-delete=yes
+          gcloud compute instance-groups managed set-instance-template webapp-igm --template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
+          gcloud compute instance-groups managed rolling-action start-update webapp-igm --version=template=projects/1039297424411/regions/us-east1/instanceTemplates/instance-temp-${TIMESTAMP} --region=us-east1
