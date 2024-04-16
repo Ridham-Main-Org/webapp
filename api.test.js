@@ -28,7 +28,7 @@ describe('User API', () => {
         };
 
         request(app)
-            .post('/v1/user')
+            .post('/v5/user')
             .send(userData)
             .expect(201)
             .end((err, res) => {
@@ -45,7 +45,7 @@ describe('User API', () => {
         const authHeader = `Basic ${credentials}`;
 
         request(app)
-            .get(`/v1/user/self`)
+            .get(`/v5/user/self`)
             .set("Authorization", authHeader)
             .expect(200)
             .end((err, res) => {
@@ -61,7 +61,7 @@ describe('User API', () => {
     });
 });
 
-describe('PUT /v1/user/self', () => {
+describe('PUT /v5/user/self', () => {
     it('should update a user account and validate the update using GET call', () => {
 
         const credentials = Buffer.from(`${createdUser.username}:${userData.password}`).toString('base64');
@@ -81,7 +81,7 @@ describe('PUT /v1/user/self', () => {
         };
 
         request(app)
-            .put(`/v1/user/self`)
+            .put(`/v5/user/self`)
             .set("Authorization", authHeader)
             .send(updatedData)
             .expect(204)
