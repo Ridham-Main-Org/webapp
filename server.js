@@ -11,7 +11,7 @@ const logger = getLogger();
 app.use(express.json());
 
 app.use('/healthz', healthzRoutes);
-app.use('/v1/user', userRoutes);
+app.use('/v5/user', userRoutes);
 
 
 app.listen(3000, () => {
